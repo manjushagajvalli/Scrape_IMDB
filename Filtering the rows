@@ -1,0 +1,18 @@
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("MissingValuesMap").getOrCreate()
+
+data = [("Alice", 1, "NY"), ("Bob", None, "CA"), ("Charlie", 3, None)]
+columns = ["Name", "Score", "State"]
+df = spark.createDataFrame(data, columns)
+
+# Convert DataFrame to RDD to use map
+rdd = df.rdd
+
+# Filter out rows where 'Score' or 'State' is None (or null)
+filtered_rdd = rdd.filter(lambda row: row["Score"] is not None and row["State"] is not None)
+
+# Convert back to DataFrame (optional)
+filtered_df = filtered_rdd.toDF(columns)
+
+filtered_df.show()
