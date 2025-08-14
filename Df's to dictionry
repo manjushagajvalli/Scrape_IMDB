@@ -1,0 +1,13 @@
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("SampleCode").getOrCreate()
+
+data = [("key1", "value1"), ("key2", "value2")]
+columns = ["key", "value"]
+df = spark.createDataFrame(data, columns)
+
+# Using collectAsMap on an RDD to create a dictionary
+rdd_pairs = df.rdd.map(lambda row: (row["key"], row["value"])).
+dictionary = rdd_pairs.collectAsMap().
+
+print(dictionary) 
